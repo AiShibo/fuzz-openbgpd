@@ -1,0 +1,19 @@
+bgpd-monotime.o: monotime.c /usr/include/time.h /usr/include/sys/cdefs.h \
+  ../../include/sys/_null.h /usr/include/sys/_types.h \
+  /usr/include/machine/_types.h /usr/include/x86/_types.h \
+  /usr/include/machine/_limits.h /usr/include/x86/_limits.h \
+  /usr/include/sys/_clock_id.h /usr/include/sys/timespec.h \
+  /usr/include/sys/_timespec.h /usr/include/xlocale/_time.h monotime.h
+/usr/include/time.h:
+/usr/include/sys/cdefs.h:
+../../include/sys/_null.h:
+/usr/include/sys/_types.h:
+/usr/include/machine/_types.h:
+/usr/include/x86/_types.h:
+/usr/include/machine/_limits.h:
+/usr/include/x86/_limits.h:
+/usr/include/sys/_clock_id.h:
+/usr/include/sys/timespec.h:
+/usr/include/sys/_timespec.h:
+/usr/include/xlocale/_time.h:
+monotime.h:
