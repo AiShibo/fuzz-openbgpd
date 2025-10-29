@@ -1,0 +1,151 @@
+From c14bc74ec403554f8707511527bd29183f183f2d Mon Sep 17 00:00:00 2001
+From: Claudio Jeker <claudio@openbsd.org>
+Date: Tue, 5 May 2020 09:13:19 +0200
+Subject: [PATCH 5/6] Add placeholders to manual pages
+
+---
+ src/usr.sbin/bgpctl/bgpctl.8  |  8 ++++----
+ src/usr.sbin/bgpd/bgpd.8      |  8 ++++----
+ src/usr.sbin/bgpd/bgpd.conf.5 |  8 +++-----
+ src/usr.sbin/bgplgd/bgplgd.8  | 14 +++++++-------
+ 4 files changed, 18 insertions(+), 20 deletions(-)
+
+diff --git src/usr.sbin/bgpctl/bgpctl.8 src/usr.sbin/bgpctl/bgpctl.8
+index a1bd363674..576c05e221 100644
+--- src/usr.sbin/bgpctl/bgpctl.8
++++ src/usr.sbin/bgpctl/bgpctl.8
+@@ -49,7 +49,7 @@ Use
+ to communicate with
+ .Xr bgpd 8
+ instead of the default
+-.Pa /var/run/bgpd.sock.<rdomain>
++.Pa @RUNSTATEDIR@/bgpd.sock.<rdomain>
+ where
+ .Ar <rdomain>
+ is the routing domain
+@@ -490,12 +490,12 @@ in a terse format.
+ Show a list of all currently loaded fib routing tables.
+ .El
+ .Sh FILES
+-.Bl -tag -width "/var/run/bgpd.sockXXX" -compact
+-.It Pa /etc/bgpd.conf
++.Bl -tag -width "@RUNSTATEDIR@/bgpd.sockXXX" -compact
++.It Pa @SYSCONFDIR@/bgpd.conf
+ default
+ .Xr bgpd 8
+ configuration file
+-.It Pa /var/run/bgpd.sock
++.It Pa @RUNSTATEDIR@/bgpd.sock
+ default
+ .Xr bgpd 8
+ control socket
+diff --git src/usr.sbin/bgpd/bgpd.8 src/usr.sbin/bgpd/bgpd.8
+index 6b304442b4..b91b67ad25 100644
+--- src/usr.sbin/bgpd/bgpd.8
++++ src/usr.sbin/bgpd/bgpd.8
+@@ -197,7 +197,7 @@ Use
+ .Ar file
+ as the configuration file,
+ instead of the default
+-.Pa /etc/bgpd.conf .
++.Pa @SYSCONFDIR@/bgpd.conf .
+ .It Fl n
+ Configtest mode.
+ Only check the configuration file for validity.
+@@ -207,12 +207,12 @@ Produce more verbose output.
+ Show the version and exit.
+ .El
+ .Sh FILES
+-.Bl -tag -width "/var/run/bgpd.sock.<rdomain>" -compact
+-.It Pa /etc/bgpd.conf
++.Bl -tag -width "@RUNSTATEDIR@/bgpd.sock.<rdomain>" -compact
++.It Pa @SYSCONFDIR@/bgpd.conf
+ Default
+ .Nm
+ configuration file.
+-.It Pa /var/run/bgpd.sock.<rdomain>
++.It Pa @RUNSTATEDIR@/bgpd.sock.<rdomain>
+ Default
+ .Nm
+ control socket, where
+diff --git src/usr.sbin/bgpd/bgpd.conf.5 src/usr.sbin/bgpd/bgpd.conf.5
+index d4b3fb71cf..a6fa619e3d 100644
+--- src/usr.sbin/bgpd/bgpd.conf.5
++++ src/usr.sbin/bgpd/bgpd.conf.5
+@@ -389,7 +389,7 @@ If
+ .Ic restricted
+ is specified, a restricted control socket will be created.
+ By default
+-.Pa /var/run/bgpd.sock.<rdomain>
++.Pa @RUNSTATEDIR@/bgpd.sock.<rdomain>
+ is used where
+ .Ar <rdomain>
+ is the routing domain in which
+@@ -2306,12 +2306,10 @@ For prefixes with equally long paths, the prefix with the larger weight
+ is selected.
+ .El
+ .Sh FILES
+-.Bl -tag -width "/etc/examples/bgpd.conf" -compact
+-.It Pa /etc/bgpd.conf
++.Bl -tag -width "@SYSCONFDIR@/bgpd.conf" -compact
++.It Pa @SYSCONFDIR@/bgpd.conf
+ .Xr bgpd 8
+ configuration file.
+-.It Pa /etc/examples/bgpd.conf
+-Example configuration file.
+ .El
+ .Sh SEE ALSO
+ .Xr strftime 3 ,
+diff --git src/usr.sbin/bgplgd/bgplgd.8 src/usr.sbin/bgplgd/bgplgd.8
+index ce9a9d3934..7686a1a86d 100644
+--- src/usr.sbin/bgplgd/bgplgd.8
++++ src/usr.sbin/bgplgd/bgplgd.8
+@@ -39,11 +39,11 @@ is a simple server that implements a simple web API to query
+ .Pp
+ .Nm
+ opens a socket at
+-.Pa /var/www/run/bgplgd.sock ,
+-owned by www:www,
++.Pa @WWWRUNSTATEDIR@/bgplgd.sock ,
++owned by @WWW_USER@,
+ with permissions 0660.
+ It will then drop privileges to user
+-.Qq _bgplgd ,
++.Qq @BGPLGD_USER@ ,
+ .Xr unveil 2
+ the
+ .Xr bgpctl 8
+@@ -69,7 +69,7 @@ to query
+ Use
+ .Ar socket
+ instead of the default
+-.Pa /var/run/bgpd.rsock
++.Pa @RUNSTATEDIR@/bgpd.rsock
+ to communicate with
+ .Xr bgpd 8 .
+ .It Fl s Ar socket
+@@ -77,10 +77,10 @@ Create and bind to alternative local socket at
+ .Ar socket .
+ .It Fl U Ar user
+ Change the owner of
+-.Pa /var/www/run/bgplgd.sock
++.Pa @WWWRUNSTATEDIR@/bgplgd.sock
+ to
+ .Ar user
+-and its primary group instead of the default www:www.
++and its primary group instead of the default @WWW_USER@.
+ .It Fl V
+ Show the version and exit.
+ .El
+@@ -177,7 +177,7 @@ to have
+ .Xr bgpd 8
+ open a second, restricted, control socket:
+ .Pp
+-.Dl socket \&"/var/run/bgpd.rsock\&" restricted
++.Dl socket \&"@RUNSTATEDIR@/bgpd.rsock\&" restricted
+ .Pp
+ An example setup in
+ .Xr httpd 8
+-- 
+2.46.0
+

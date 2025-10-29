@@ -1,0 +1,32 @@
+From e27202d6847d1774c580d752d930c22ee7d181fc Mon Sep 17 00:00:00 2001
+From: Claudio Jeker <claudio@openbsd.org>
+Date: Tue, 26 Feb 2019 15:37:50 +0100
+Subject: [PATCH 2/6] set IPV6_V6ONLY if we are binding to an IPv6 address
+
+---
+ src/usr.sbin/bgpd/config.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git src/usr.sbin/bgpd/config.c src/usr.sbin/bgpd/config.c
+index 94efad738b..ec52202b37 100644
+--- src/usr.sbin/bgpd/config.c
++++ src/usr.sbin/bgpd/config.c
+@@ -589,6 +589,15 @@ prepare_listeners(struct bgpd_config *conf)
+ 		    &opt, sizeof(opt)) == -1)
+ 			fatal("setsockopt SO_REUSEADDR");
+ 
++#ifdef IPV6_V6ONLY
++		if (la->sa.ss_family == AF_INET6) {
++			opt = 1;
++			if (setsockopt(la->fd, IPPROTO_IPV6, IPV6_V6ONLY,
++			    &opt, sizeof(opt)) == -1)
++				fatal("setsockopt IPV6_V6ONLY");
++		}
++#endif
++
+ 		if (bind(la->fd, (struct sockaddr *)&la->sa, la->sa_len) ==
+ 		    -1) {
+ 			switch (la->sa.ss_family) {
+-- 
+2.46.0
+
